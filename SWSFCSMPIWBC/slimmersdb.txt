@@ -1,0 +1,1741 @@
+﻿-- MySQL dump 10.13  Distrib 5.6.24, for Win32 (x86)
+--
+-- Host: localhost    Database: slimmersdb
+-- ------------------------------------------------------
+-- Server version	5.5.45-log
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `accounttbl`
+--
+
+CREATE DATABASE IF NOT EXISTS `slimmersdb`;
+
+USE `slimmersdb`;
+
+DROP TABLE IF EXISTS `accounttbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `accounttbl` (
+  `Account_No` int(11) NOT NULL,
+  `Username` varchar(15) NOT NULL,
+  `Password` varchar(32) NOT NULL,
+  `Account_Status` int(11) NOT NULL,
+  `Employee_No` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Account_No`),
+  KEY `account_emp_fk` (`Employee_No`),
+  CONSTRAINT `account_emp_fk` FOREIGN KEY (`Employee_No`) REFERENCES `employeetbl` (`Employee_No`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `accounttbl`
+--
+
+LOCK TABLES `accounttbl` WRITE;
+/*!40000 ALTER TABLE `accounttbl` DISABLE KEYS */;
+INSERT INTO `accounttbl` VALUES (1,'admin','admin',1,NULL);
+/*!40000 ALTER TABLE `accounttbl` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `actual_servicetbl`
+--
+
+DROP TABLE IF EXISTS `actual_servicetbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `actual_servicetbl` (
+  `Actual_ServiceNo` int(11) NOT NULL,
+  `Appointment_No` int(11) NOT NULL,
+  `Product_ProdType_No` int(11) NOT NULL,
+  `Actual_Quantity` int(11) NOT NULL,
+  PRIMARY KEY (`Actual_ServiceNo`),
+  KEY `actual_appoint` (`Appointment_No`),
+  KEY `actual_product` (`Product_ProdType_No`),
+  KEY `Product_ProdType_No` (`Product_ProdType_No`),
+  CONSTRAINT `actual_appoint` FOREIGN KEY (`Appointment_No`) REFERENCES `appointmenttbl` (`Appointment_No`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `actual_product` FOREIGN KEY (`Product_ProdType_No`) REFERENCES `product_prodtypetbl` (`Product_ProdType_No`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `actual_servicetbl`
+--
+
+
+--
+-- Temporary view structure for view `annualpulloutprodreport`
+--
+
+DROP TABLE IF EXISTS `annualpulloutprodreport`;
+/*!50001 DROP VIEW IF EXISTS `annualpulloutprodreport`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `annualpulloutprodreport` AS SELECT 
+ 1 AS `inventory_subtract_no`,
+ 1 AS `Date_Deducted`,
+ 1 AS `Product_Type`,
+ 1 AS `Product_Name`,
+ 1 AS `Previous_Quantity`,
+ 1 AS `Quantity_Deducted`,
+ 1 AS `Reason_Usage`,
+ 1 AS `YEAR(Date_Deducted)`,
+ 1 AS `Month`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `annualrestockreport`
+--
+
+DROP TABLE IF EXISTS `annualrestockreport`;
+/*!50001 DROP VIEW IF EXISTS `annualrestockreport`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `annualrestockreport` AS SELECT 
+ 1 AS `Inventory_Added_No`,
+ 1 AS `Product_Type`,
+ 1 AS `Product_Name`,
+ 1 AS `Quantity_Added`,
+ 1 AS `Inadequate_Qty`,
+ 1 AS `Date_Added`,
+ 1 AS `Previous_Quantity`,
+ 1 AS `Month`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `annualsalesreportperproduct`
+--
+
+DROP TABLE IF EXISTS `annualsalesreportperproduct`;
+/*!50001 DROP VIEW IF EXISTS `annualsalesreportperproduct`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `annualsalesreportperproduct` AS SELECT 
+ 1 AS `Billing_No`,
+ 1 AS `Billing_Date`,
+ 1 AS `ModeOfPayment`,
+ 1 AS `SubTotal`,
+ 1 AS `Total_Bill`,
+ 1 AS `Amount_Paid`,
+ 1 AS `Year`,
+ 1 AS `Month`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `annualsalesreportperservice`
+--
+
+DROP TABLE IF EXISTS `annualsalesreportperservice`;
+/*!50001 DROP VIEW IF EXISTS `annualsalesreportperservice`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `annualsalesreportperservice` AS SELECT 
+ 1 AS `Billing_No`,
+ 1 AS `Billing_Date`,
+ 1 AS `Patient`,
+ 1 AS `ModeOfPayment`,
+ 1 AS `SubTotal`,
+ 1 AS `Total_Bill`,
+ 1 AS `Amount_Paid`,
+ 1 AS `YEAR(Billing_Date)`,
+ 1 AS `Month`,
+ 1 AS `Service_Name`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `annualservicereport`
+--
+
+DROP TABLE IF EXISTS `annualservicereport`;
+/*!50001 DROP VIEW IF EXISTS `annualservicereport`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `annualservicereport` AS SELECT 
+ 1 AS `Appointment_No`,
+ 1 AS `Appointment_Date`,
+ 1 AS `Service_Name`,
+ 1 AS `Employee`,
+ 1 AS `Patient`,
+ 1 AS `year(Appointment_Date)`,
+ 1 AS `Month`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `appointment_payment`
+--
+
+DROP TABLE IF EXISTS `appointment_payment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `appointment_payment` (
+  `Appointment_Payment_No` int(11) NOT NULL,
+  `Appointment_No` int(11) NOT NULL,
+  `Billing_No` int(11) NOT NULL,
+  `Payment_Status` varchar(15) NOT NULL,
+  PRIMARY KEY (`Appointment_Payment_No`),
+  KEY `Appointment_No` (`Appointment_No`),
+  KEY `Billing_No` (`Billing_No`),
+  CONSTRAINT `appointment_payment` FOREIGN KEY (`Appointment_No`) REFERENCES `appointmenttbl` (`Appointment_No`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `appointment_payment`
+--
+
+
+--
+-- Table structure for table `appointmenttbl`
+--
+
+DROP TABLE IF EXISTS `appointmenttbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `appointmenttbl` (
+  `Appointment_No` int(11) NOT NULL,
+  `Appointment_Date` date NOT NULL,
+  `Appointment_StartTime` varchar(10) NOT NULL,
+  `Appointment_EndTime` varchar(10) NOT NULL,
+  `Appointment_Status` varchar(15) NOT NULL,
+  `Service_No` int(11) NOT NULL,
+  `Machine_No` int(11) NOT NULL,
+  PRIMARY KEY (`Appointment_No`),
+  KEY `Service_No` (`Service_No`),
+  KEY `appoint_machine` (`Machine_No`),
+  CONSTRAINT `appoint_machine` FOREIGN KEY (`Machine_No`) REFERENCES `machinetbl` (`Machine_No`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `appoint_service_fk` FOREIGN KEY (`Service_No`) REFERENCES `servicetbl` (`Service_No`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `appointmenttbl`
+--
+
+
+--
+-- Table structure for table `billing_itemstbl`
+--
+
+DROP TABLE IF EXISTS `billing_itemstbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `billing_itemstbl` (
+  `Billing_ItemNo` int(11) NOT NULL,
+  `Billing_No` int(11) NOT NULL,
+  `Product_ProdType_No` int(11) DEFAULT NULL,
+  `Service_No` int(11) DEFAULT NULL,
+  `Quantity` int(11) NOT NULL,
+  PRIMARY KEY (`Billing_ItemNo`),
+  KEY `Product_No` (`Product_ProdType_No`),
+  KEY `Service_No` (`Service_No`),
+  KEY `Billing_No` (`Billing_No`),
+  CONSTRAINT `billing_item_fk` FOREIGN KEY (`Billing_No`) REFERENCES `billingtbl` (`Billing_No`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `billing_product_fk` FOREIGN KEY (`Product_ProdType_No`) REFERENCES `product_prodtypetbl` (`Product_ProdType_No`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `billing_service_fk` FOREIGN KEY (`Service_No`) REFERENCES `servicetbl` (`Service_No`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `billing_itemstbl`
+--
+
+--
+-- Table structure for table `billingtbl`
+--
+
+DROP TABLE IF EXISTS `billingtbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `billingtbl` (
+  `Billing_No` int(11) NOT NULL,
+  `Billing_Date` date NOT NULL,
+  `ModeOfPayment` varchar(15) NOT NULL,
+  `Total_Bill` decimal(11,2) NOT NULL,
+  `Balance` decimal(11,2) NOT NULL,
+  `Patient_No` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Billing_No`),
+  KEY `Patient_No` (`Patient_No`),
+  CONSTRAINT `patient_bill_fk` FOREIGN KEY (`Patient_No`) REFERENCES `patienttbl` (`Patient_No`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `billingtbl`
+
+--
+-- Temporary view structure for view `dailysalesreportperproduct`
+--
+
+DROP TABLE IF EXISTS `dailysalesreportperproduct`;
+/*!50001 DROP VIEW IF EXISTS `dailysalesreportperproduct`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `dailysalesreportperproduct` AS SELECT 
+ 1 AS `Billing_No`,
+ 1 AS `Billing_Date`,
+ 1 AS `ModeOfPayment`,
+ 1 AS `SubTotal`,
+ 1 AS `Total_Bill`,
+ 1 AS `Amount_Paid`,
+ 1 AS `YEAR(Billing_Date)`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `dailysalesreportperservice`
+--
+
+DROP TABLE IF EXISTS `dailysalesreportperservice`;
+/*!50001 DROP VIEW IF EXISTS `dailysalesreportperservice`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `dailysalesreportperservice` AS SELECT 
+ 1 AS `Billing_No`,
+ 1 AS `Billing_Date`,
+ 1 AS `Patient`,
+ 1 AS `ModeOfPayment`,
+ 1 AS `Service_Name`,
+ 1 AS `SubTotal`,
+ 1 AS `Total_Bill`,
+ 1 AS `Amount_Paid`,
+ 1 AS `YEAR(Billing_Date)`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `dailyservicereport`
+--
+
+DROP TABLE IF EXISTS `dailyservicereport`;
+/*!50001 DROP VIEW IF EXISTS `dailyservicereport`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `dailyservicereport` AS SELECT 
+ 1 AS `Appointment_No`,
+ 1 AS `TOTALRECORD`,
+ 1 AS `Appointment_Date`,
+ 1 AS `Service_Name`,
+ 1 AS `Employee`,
+ 1 AS `Patient`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `delivery_ordertbl`
+--
+
+DROP TABLE IF EXISTS `delivery_ordertbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `delivery_ordertbl` (
+  `Delivery_Order_No` int(11) NOT NULL,
+  `Delivery_No` int(11) NOT NULL,
+  `Order_Product_No` int(11) NOT NULL,
+  `Delivery_Status` varchar(15) NOT NULL,
+  PRIMARY KEY (`Delivery_Order_No`),
+  KEY `index2` (`Delivery_No`),
+  KEY `index3` (`Order_Product_No`),
+  CONSTRAINT `delivery_fk` FOREIGN KEY (`Delivery_No`) REFERENCES `deliverytbl` (`Delivery_No`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `delivery_order_fk` FOREIGN KEY (`Order_Product_No`) REFERENCES `order_producttbl` (`Order_Product_No`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `delivery_ordertbl`
+--
+
+
+
+--
+-- Table structure for table `deliverytbl`
+--
+
+DROP TABLE IF EXISTS `deliverytbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `deliverytbl` (
+  `Delivery_No` int(11) NOT NULL,
+  `Delivery_ReceiptNo` int(11) DEFAULT NULL,
+  `Delivery_Date` date NOT NULL,
+  PRIMARY KEY (`Delivery_No`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `deliverytbl`
+--
+
+
+--
+-- Table structure for table `discount_servicestbl`
+--
+
+DROP TABLE IF EXISTS `discount_servicestbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `discount_servicestbl` (
+  `Service_DiscountNo` int(11) NOT NULL,
+  `Promo_No` int(11) NOT NULL,
+  `Service_No` int(11) NOT NULL,
+  `Discount_Rate` int(11) NOT NULL,
+  PRIMARY KEY (`Service_DiscountNo`),
+  KEY `Discount_No` (`Promo_No`),
+  KEY `Service_No` (`Service_No`),
+  CONSTRAINT `service_promo_fk` FOREIGN KEY (`Promo_No`) REFERENCES `service_promotbl` (`Promo_No`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `service_selected_fk` FOREIGN KEY (`Service_No`) REFERENCES `servicetbl` (`Service_No`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `discount_servicestbl`
+--
+
+
+--
+-- Table structure for table `employee_appointmenttbl`
+--
+
+DROP TABLE IF EXISTS `employee_appointmenttbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `employee_appointmenttbl` (
+  `Employee_AppointmentNo` int(11) NOT NULL AUTO_INCREMENT,
+  `Appointment_No` int(11) NOT NULL,
+  `Employee_Patient_No` int(11) NOT NULL,
+  PRIMARY KEY (`Employee_AppointmentNo`),
+  KEY `Appointment_No` (`Appointment_No`),
+  KEY `Employee_No` (`Employee_Patient_No`),
+  CONSTRAINT `emp_appoint_no` FOREIGN KEY (`Appointment_No`) REFERENCES `appointmenttbl` (`Appointment_No`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `emp_patient_appointment_fk` FOREIGN KEY (`Employee_Patient_No`) REFERENCES `employee_patienttbl` (`Employee_Patient_No`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `employee_appointmenttbl`
+--
+
+
+--
+-- Table structure for table `employee_patienttbl`
+--
+
+DROP TABLE IF EXISTS `employee_patienttbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `employee_patienttbl` (
+  `Employee_Patient_No` int(11) NOT NULL,
+  `Patient_No` int(11) NOT NULL,
+  `Employee_No` int(11) NOT NULL,
+  PRIMARY KEY (`Employee_Patient_No`),
+  KEY `Patient_No` (`Patient_No`),
+  KEY `Employee_No` (`Employee_No`),
+  CONSTRAINT `employee_patient_fk` FOREIGN KEY (`Employee_No`) REFERENCES `employeetbl` (`Employee_No`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `patient_employee_fk` FOREIGN KEY (`Patient_No`) REFERENCES `patienttbl` (`Patient_No`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `employee_patienttbl`
+--
+
+
+
+--
+-- Table structure for table `employee_positiontbl`
+--
+
+DROP TABLE IF EXISTS `employee_positiontbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `employee_positiontbl` (
+  `Employee_Position_No` int(11) NOT NULL,
+  `Position_Name` varchar(50) NOT NULL,
+  `Position_Description` varchar(50) NOT NULL,
+  PRIMARY KEY (`Employee_Position_No`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `employee_positiontbl`
+--
+
+LOCK TABLES `employee_positiontbl` WRITE;
+/*!40000 ALTER TABLE `employee_positiontbl` DISABLE KEYS */;
+INSERT INTO `employee_positiontbl` VALUES (1,'Manager','Manages the whole business'),(2,'Therapist','Renders services'),(3,'Consultant','Consults the patient.'),(4,'Receptionist','Receptionist');
+/*!40000 ALTER TABLE `employee_positiontbl` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `employee_schedtbl`
+--
+
+DROP TABLE IF EXISTS `employee_schedtbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `employee_schedtbl` (
+  `Schedule_No` int(11) NOT NULL,
+  `Schedule_Day` varchar(20) NOT NULL,
+  `Schedule_TimeIn` varchar(20) NOT NULL,
+  `Schedule_TimeOut` varchar(20) NOT NULL,
+  `Employee_No` int(11) NOT NULL,
+  PRIMARY KEY (`Schedule_No`),
+  KEY `Emplyee_No` (`Employee_No`),
+  CONSTRAINT `emp_sched_fk` FOREIGN KEY (`Employee_No`) REFERENCES `employeetbl` (`Employee_No`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `employee_schedtbl`
+--
+
+
+--
+-- Table structure for table `employeetbl`
+--
+
+DROP TABLE IF EXISTS `employeetbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `employeetbl` (
+  `Employee_No` int(11) NOT NULL,
+  `Employee_LName` varchar(50) NOT NULL,
+  `Employee_FName` varchar(50) NOT NULL,
+  `Employee_MidInit` varchar(2) NOT NULL,
+  `Employee_ContactNo` varchar(12) NOT NULL,
+  `Employee_Email` varchar(40) NOT NULL,
+  `Employee_Position_No` int(11) NOT NULL,
+  `Employee_Status` varchar(10) NOT NULL,
+  `Employee_Availability` varchar(15) NOT NULL,
+  PRIMARY KEY (`Employee_No`),
+  KEY `Employee_Position_No` (`Employee_Position_No`),
+  CONSTRAINT `emp_position_fk` FOREIGN KEY (`Employee_Position_No`) REFERENCES `employee_positiontbl` (`Employee_Position_No`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `employeetbl`
+--
+
+LOCK TABLES `employeetbl` WRITE;
+/*!40000 ALTER TABLE `employeetbl` DISABLE KEYS */;
+INSERT INTO `employeetbl` VALUES (1,'Rivera','Czarina','T','09068132792','cza@yahoo.com',1,'Active','Available'),(2,'Aglibot','Patricia Lei','','09165470516','pat@yahoo.com',1,'Active','Available'),(3,'Presto','Ian Karl','','09152184456','ian@yahoo.com',3,'Deleted','Available'),(4,'Dayto','Rizaldy','','09165786756','rd@yahoo.com',2,'Active','Available'),(5,'Dela Cruz','Alvin','','09176543546','vin@yahoo.com',3,'Deleted','Not Available'),(6,'Presto','Ian','','09165476345','ianpresto@yahoo.com',3,'Active','Available'),(7,'Alvin','Dela Cruz','','09236123812','alvin@yahoo.com',4,'Active','Available');
+/*!40000 ALTER TABLE `employeetbl` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `inventory_addedtbl`
+--
+
+DROP TABLE IF EXISTS `inventory_addedtbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `inventory_addedtbl` (
+  `Inventory_Added_No` int(11) NOT NULL,
+  `Inventory_No` int(11) NOT NULL,
+  `Order_Product_No` int(11) NOT NULL,
+  `Previous_Quantity` int(11) NOT NULL,
+  `Quantity_Added` int(11) NOT NULL,
+  `Inadequate_Qty` int(11) NOT NULL,
+  `Date_Added` date NOT NULL,
+  `Expiration_Date` date NOT NULL,
+  `Restock_Status` varchar(30) NOT NULL,
+  PRIMARY KEY (`Inventory_Added_No`),
+  KEY `added_invent_fk` (`Inventory_No`),
+  KEY `Order_No` (`Order_Product_No`),
+  CONSTRAINT `added_invent_fk` FOREIGN KEY (`Inventory_No`) REFERENCES `product_inventorytbl` (`Inventory_No`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `order_added_fk` FOREIGN KEY (`Order_Product_No`) REFERENCES `order_producttbl` (`Order_Product_No`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `inventory_addedtbl`
+--
+
+
+--
+-- Table structure for table `inventory_subtracttbl`
+--
+
+DROP TABLE IF EXISTS `inventory_subtracttbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `inventory_subtracttbl` (
+  `Inventory_Subtract_No` int(11) NOT NULL,
+  `Date_Deducted` date NOT NULL,
+  `Inventory_No` int(11) NOT NULL,
+  `Previous_Quantity` int(11) NOT NULL,
+  `Quantity_Deducted` int(11) NOT NULL,
+  `Reason_Usage` varchar(100) NOT NULL,
+  `Inventory_Added_No` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Inventory_Subtract_No`),
+  KEY `subtract_invent_fk` (`Inventory_No`),
+  KEY `added_invent_fk` (`Inventory_Added_No`),
+  CONSTRAINT `subtract_invent_fk` FOREIGN KEY (`Inventory_No`) REFERENCES `product_inventorytbl` (`Inventory_No`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `inventory_subtracttbl`
+--
+
+--
+-- Temporary view structure for view `inventorylistperproduct`
+--
+
+DROP TABLE IF EXISTS `inventorylistperproduct`;
+/*!50001 DROP VIEW IF EXISTS `inventorylistperproduct`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `inventorylistperproduct` AS SELECT 
+ 1 AS `Inventory_No`,
+ 1 AS `Product_Type`,
+ 1 AS `Product_Name`,
+ 1 AS `Total_Quantity`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `inventorylistpertype`
+--
+
+DROP TABLE IF EXISTS `inventorylistpertype`;
+/*!50001 DROP VIEW IF EXISTS `inventorylistpertype`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `inventorylistpertype` AS SELECT 
+ 1 AS `Inventory_No`,
+ 1 AS `Product_Type`,
+ 1 AS `Product_Name`,
+ 1 AS `Total_Quantity`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `machine_typetbl`
+--
+
+DROP TABLE IF EXISTS `machine_typetbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `machine_typetbl` (
+  `Machine_Type_No` int(11) NOT NULL,
+  `Machine_Type_Name` varchar(50) NOT NULL,
+  `Machine_Quantity` int(11) NOT NULL,
+  `Service_No` int(11) NOT NULL,
+  `Machine_Type_Status` varchar(10) NOT NULL,
+  PRIMARY KEY (`Machine_Type_No`),
+  KEY `Service_No` (`Service_No`),
+  CONSTRAINT `mach_service_fk` FOREIGN KEY (`Service_No`) REFERENCES `servicetbl` (`Service_No`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `machine_typetbl`
+--
+
+LOCK TABLES `machine_typetbl` WRITE;
+/*!40000 ALTER TABLE `machine_typetbl` DISABLE KEYS */;
+INSERT INTO `machine_typetbl` VALUES (1,'Ultrasonic',3,5,'Active'),(2,'Ultrasonic Skin Cleanser',3,1,'Active');
+/*!40000 ALTER TABLE `machine_typetbl` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `machinetbl`
+--
+
+DROP TABLE IF EXISTS `machinetbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `machinetbl` (
+  `Machine_No` int(11) NOT NULL,
+  `Machine_Name` varchar(50) NOT NULL,
+  `Machine_Type_No` int(11) NOT NULL,
+  `Machine_Status` varchar(15) NOT NULL,
+  PRIMARY KEY (`Machine_No`),
+  KEY `Machine_Type_No` (`Machine_Type_No`),
+  CONSTRAINT `mach_type_fk` FOREIGN KEY (`Machine_Type_No`) REFERENCES `machine_typetbl` (`Machine_Type_No`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `machinetbl`
+--
+
+LOCK TABLES `machinetbl` WRITE;
+/*!40000 ALTER TABLE `machinetbl` DISABLE KEYS */;
+INSERT INTO `machinetbl` VALUES (1,'Ultrasonic 1',1,'Available'),(2,'Ultrasonic 2',1,'Available'),(3,'Ultrasonic 3',1,'Available'),(4,'Ultrasonic Skin Cleanser 1',2,'Available'),(5,'Ultrasonic Skin Cleanser 2',2,'Available'),(6,'Ultrasonic Skin Cleanser 3',2,'Available');
+/*!40000 ALTER TABLE `machinetbl` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Temporary view structure for view `monthlypulloutprodreport`
+--
+
+DROP TABLE IF EXISTS `monthlypulloutprodreport`;
+/*!50001 DROP VIEW IF EXISTS `monthlypulloutprodreport`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `monthlypulloutprodreport` AS SELECT 
+ 1 AS `inventory_subtract_no`,
+ 1 AS `Date_Deducted`,
+ 1 AS `Product_Type`,
+ 1 AS `Product_Name`,
+ 1 AS `Previous_Quantity`,
+ 1 AS `Quantity_Deducted`,
+ 1 AS `Reason_Usage`,
+ 1 AS `YEAR(Date_Deducted)`,
+ 1 AS `Day`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `monthlyrestockreport`
+--
+
+DROP TABLE IF EXISTS `monthlyrestockreport`;
+/*!50001 DROP VIEW IF EXISTS `monthlyrestockreport`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `monthlyrestockreport` AS SELECT 
+ 1 AS `Inventory_Added_No`,
+ 1 AS `Product_Type`,
+ 1 AS `Product_Name`,
+ 1 AS `Quantity_Added`,
+ 1 AS `Inadequate_Qty`,
+ 1 AS `Date_Added`,
+ 1 AS `Previous_Quantity`,
+ 1 AS `Day`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `monthlysalesreportperproduct`
+--
+
+DROP TABLE IF EXISTS `monthlysalesreportperproduct`;
+/*!50001 DROP VIEW IF EXISTS `monthlysalesreportperproduct`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `monthlysalesreportperproduct` AS SELECT 
+ 1 AS `Billing_No`,
+ 1 AS `Billing_Date`,
+ 1 AS `ModeOfPayment`,
+ 1 AS `SubTotal`,
+ 1 AS `Total_Bill`,
+ 1 AS `Amount_Paid`,
+ 1 AS `Month`,
+ 1 AS `Day`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `monthlysalesreportperservice`
+--
+
+DROP TABLE IF EXISTS `monthlysalesreportperservice`;
+/*!50001 DROP VIEW IF EXISTS `monthlysalesreportperservice`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `monthlysalesreportperservice` AS SELECT 
+ 1 AS `Billing_No`,
+ 1 AS `Billing_Date`,
+ 1 AS `Patient`,
+ 1 AS `ModeOfPayment`,
+ 1 AS `SubTotal`,
+ 1 AS `Total_Bill`,
+ 1 AS `Amount_Paid`,
+ 1 AS `Month`,
+ 1 AS `Day`,
+ 1 AS `Service_Name`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `monthlyservicereport`
+--
+
+DROP TABLE IF EXISTS `monthlyservicereport`;
+/*!50001 DROP VIEW IF EXISTS `monthlyservicereport`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `monthlyservicereport` AS SELECT 
+ 1 AS `Appointment_No`,
+ 1 AS `Appointment_Date`,
+ 1 AS `Service_Name`,
+ 1 AS `Employee`,
+ 1 AS `Patient`,
+ 1 AS `Month`,
+ 1 AS `Day`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `order_producttbl`
+--
+
+DROP TABLE IF EXISTS `order_producttbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `order_producttbl` (
+  `Order_Product_No` int(11) NOT NULL,
+  `Order_Quantity` int(11) NOT NULL,
+  `Product_ProdType_No` int(11) NOT NULL,
+  `Order_No` int(11) NOT NULL,
+  `Order_Product_Status` varchar(20) NOT NULL,
+  PRIMARY KEY (`Order_Product_No`),
+  KEY `Product_No` (`Product_ProdType_No`),
+  KEY `Order_No` (`Order_No`),
+  CONSTRAINT `order_order_fk` FOREIGN KEY (`Order_No`) REFERENCES `ordertbl` (`Order_No`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `order_product_fk` FOREIGN KEY (`Product_ProdType_No`) REFERENCES `product_prodtypetbl` (`Product_ProdType_No`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `order_producttbl`
+--
+
+
+--
+-- Table structure for table `ordertbl`
+--
+
+DROP TABLE IF EXISTS `ordertbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ordertbl` (
+  `Order_No` int(11) NOT NULL,
+  `Order_Date` date NOT NULL,
+  `Order_Status` varchar(20) NOT NULL,
+  PRIMARY KEY (`Order_No`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ordertbl`
+--
+
+
+--
+-- Table structure for table `patient_demtbl`
+--
+
+DROP TABLE IF EXISTS `patient_demtbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `patient_demtbl` (
+  `Dem_No` int(11) NOT NULL,
+  `Consult_Date` varchar(20) NOT NULL,
+  `Dem_Allergies` varchar(50) NOT NULL,
+  `Dem_Frownlines` varchar(20) NOT NULL,
+  `Dem_Finelines` varchar(20) NOT NULL,
+  `Dem_Wrinkles` varchar(20) NOT NULL,
+  `Dem_Sagging` varchar(20) NOT NULL,
+  `Dem_SkinType` varchar(100) NOT NULL,
+  `Dem_Acne` varchar(100) NOT NULL,
+  `Dem_Warts` varchar(100) NOT NULL,
+  `Dem_Hy` varchar(100) NOT NULL,
+  `Dem_Reco` varchar(100) NOT NULL,
+  `Dem_Picture` varchar(200) NOT NULL,
+  `Patient_No` int(11) NOT NULL,
+  PRIMARY KEY (`Dem_No`),
+  KEY `Patient_No` (`Patient_No`),
+  CONSTRAINT `patient_dem_fk` FOREIGN KEY (`Patient_No`) REFERENCES `patienttbl` (`Patient_No`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `patient_demtbl`
+--
+
+
+--
+-- Table structure for table `patient_medicaltbl`
+--
+
+DROP TABLE IF EXISTS `patient_medicaltbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `patient_medicaltbl` (
+  `Medical_No` int(11) NOT NULL,
+  `Height` varchar(12) NOT NULL,
+  `Weight` decimal(15,1) NOT NULL,
+  `Body_Fat` int(11) NOT NULL,
+  `Body_Frame` varchar(20) NOT NULL,
+  `Blood_Pressure` varchar(11) NOT NULL,
+  `Pulse_Rate` int(11) NOT NULL,
+  `Risk_Factors` varchar(100) NOT NULL,
+  `Other_Risks` varchar(100) NOT NULL,
+  `Other_MedHist` varchar(100) NOT NULL,
+  `Patient_No` int(11) NOT NULL,
+  PRIMARY KEY (`Medical_No`),
+  KEY `Patient_No` (`Patient_No`),
+  CONSTRAINT `med_patient_fk` FOREIGN KEY (`Patient_No`) REFERENCES `patienttbl` (`Patient_No`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `patient_medicaltbl`
+--
+
+
+--
+-- Table structure for table `patient_waitlisttbl`
+--
+
+DROP TABLE IF EXISTS `patient_waitlisttbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `patient_waitlisttbl` (
+  `Waiting_No` int(11) NOT NULL AUTO_INCREMENT,
+  `Employee_Patient_No` int(11) NOT NULL,
+  `Waiting_For` varchar(20) NOT NULL,
+  `Waiting_Status` varchar(15) NOT NULL,
+  PRIMARY KEY (`Waiting_No`),
+  KEY `Patient_No` (`Employee_Patient_No`),
+  CONSTRAINT `wait_patient_fk` FOREIGN KEY (`Employee_Patient_No`) REFERENCES `employee_patienttbl` (`Employee_Patient_No`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `patient_waitlisttbl`
+--
+
+
+--
+-- Temporary view structure for view `patientlist`
+--
+
+DROP TABLE IF EXISTS `patientlist`;
+/*!50001 DROP VIEW IF EXISTS `patientlist`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `patientlist` AS SELECT 
+ 1 AS `Patient_No`,
+ 1 AS `Date_Registered`,
+ 1 AS `Patient`,
+ 1 AS `Patient_Gender`,
+ 1 AS `Patient_Age`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `patienttbl`
+--
+
+DROP TABLE IF EXISTS `patienttbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `patienttbl` (
+  `Patient_No` int(11) NOT NULL,
+  `Patient_LName` varchar(30) NOT NULL,
+  `Patient_FName` varchar(30) NOT NULL,
+  `Patient_MidInit` varchar(2) NOT NULL,
+  `Patient_Gender` varchar(7) NOT NULL,
+  `Patient_Birthdate` varchar(10) NOT NULL,
+  `Patient_Age` int(11) NOT NULL,
+  `Patient_Address` varchar(50) NOT NULL,
+  `Patient_ContactNo` varchar(11) NOT NULL,
+  `Patient_Email` varchar(40) NOT NULL,
+  `Patient_CStatus` varchar(20) NOT NULL,
+  `Patient_Occupation` varchar(20) NOT NULL,
+  `Patient_Status` varchar(15) NOT NULL,
+  `Patient_Status2` varchar(20) NOT NULL,
+  `Date_Registered` date NOT NULL,
+  PRIMARY KEY (`Patient_No`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `patienttbl`
+--
+
+
+--
+-- Table structure for table `paymenttbl`
+--
+
+DROP TABLE IF EXISTS `paymenttbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `paymenttbl` (
+  `Payment_No` int(11) NOT NULL,
+  `Amount_Paid` decimal(11,2) NOT NULL,
+  `Change` decimal(11,2) NOT NULL,
+  `Date_Paid` varchar(15) NOT NULL,
+  `Billing_No` int(11) NOT NULL,
+  PRIMARY KEY (`Payment_No`),
+  KEY `Billing_No` (`Billing_No`),
+  CONSTRAINT `billing_no_fk` FOREIGN KEY (`Billing_No`) REFERENCES `billingtbl` (`Billing_No`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `paymenttbl`
+--
+
+
+--
+-- Table structure for table `product_inventorytbl`
+--
+
+DROP TABLE IF EXISTS `product_inventorytbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `product_inventorytbl` (
+  `Inventory_No` int(11) NOT NULL,
+  `Product_ProdType_No` int(11) NOT NULL,
+  `Total_Quantity` int(11) NOT NULL,
+  PRIMARY KEY (`Inventory_No`),
+  KEY `Product_No` (`Product_ProdType_No`),
+  CONSTRAINT `product_fk` FOREIGN KEY (`Product_ProdType_No`) REFERENCES `product_prodtypetbl` (`Product_ProdType_No`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `product_inventorytbl`
+--
+
+LOCK TABLES `product_inventorytbl` WRITE;
+/*!40000 ALTER TABLE `product_inventorytbl` DISABLE KEYS */;
+INSERT INTO `product_inventorytbl` VALUES (5,5,100),(6,6,100),(11,11,49),(12,12,100),(13,13,99),(14,18,100),(15,14,100),(16,16,79);
+/*!40000 ALTER TABLE `product_inventorytbl` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `product_prodtypetbl`
+--
+
+DROP TABLE IF EXISTS `product_prodtypetbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `product_prodtypetbl` (
+  `Product_ProdType_No` int(11) NOT NULL,
+  `Product_No` int(11) NOT NULL,
+  `Product_Type_No` int(11) NOT NULL,
+  `Product_Fee` decimal(11,2) NOT NULL,
+  `Critical_Level` int(11) NOT NULL,
+  PRIMARY KEY (`Product_ProdType_No`),
+  KEY `Product_No` (`Product_No`),
+  KEY `Product_Type_No` (`Product_Type_No`),
+  CONSTRAINT `product_number_fk` FOREIGN KEY (`Product_No`) REFERENCES `producttbl` (`Product_No`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `product_type_fk` FOREIGN KEY (`Product_Type_No`) REFERENCES `product_typetbl` (`Product_Type_No`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `product_prodtypetbl`
+--
+
+LOCK TABLES `product_prodtypetbl` WRITE;
+/*!40000 ALTER TABLE `product_prodtypetbl` DISABLE KEYS */;
+INSERT INTO `product_prodtypetbl` VALUES (5,2,5,500.00,10),(6,2,6,650.00,10),(11,5,11,2500.00,10),(12,5,12,1500.00,10),(13,6,4,3000.00,10),(14,4,9,1000.00,10),(15,4,10,2000.00,10),(16,4,13,1000.00,10),(17,4,14,1000.00,10),(18,3,7,850.00,10),(19,3,8,950.00,10),(20,3,15,1500.00,10),(21,3,16,2500.00,10),(22,3,17,3000.00,10),(23,1,1,450.00,10),(24,1,2,350.00,20),(25,1,3,550.00,10),(26,1,4,750.00,10);
+/*!40000 ALTER TABLE `product_prodtypetbl` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `product_typetbl`
+--
+
+DROP TABLE IF EXISTS `product_typetbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `product_typetbl` (
+  `Product_Type_No` int(11) NOT NULL,
+  `Product_Type` varchar(50) NOT NULL,
+  `Product_Type_Description` varchar(100) NOT NULL,
+  PRIMARY KEY (`Product_Type_No`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `product_typetbl`
+--
+
+LOCK TABLES `product_typetbl` WRITE;
+/*!40000 ALTER TABLE `product_typetbl` DISABLE KEYS */;
+INSERT INTO `product_typetbl` VALUES (1,'Antiseptic','Used for anti-septics'),(2,'Seaweed','Used for oil ontrol'),(3,'Collagen','Used for age deffy facial'),(4,'Skin Lightening','Used to whiten skin'),(5,'Pore Refining','Used to refine pores'),(6,'Age Defy','Used for age defying'),(7,'Skin Protect','Used for skin protection'),(8,'Skin Renew','Used for skin rejuvination'),(9,'Pimple Clear','Used for for clearing pimple marks.'),(10,'Eye nourishing','Used to treat black under eye.'),(11,'C-Repair','Used for repairing dead skin cells'),(12,'Moisture Defense','Used for stimulating hydration within the skin.'),(13,'Peptide Power Conductive','Used for ultrasonic facial treatment'),(14,'Magic Star Remover','Used for removng keloids'),(15,'Stem Cell','Used for botox.'),(16,'Botolinum Toxin','Used for botox.'),(17,'AFY Hair Removal','Used for laser hair removal');
+/*!40000 ALTER TABLE `product_typetbl` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `producttbl`
+--
+
+DROP TABLE IF EXISTS `producttbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `producttbl` (
+  `Product_No` int(11) NOT NULL,
+  `Product_Name` varchar(20) NOT NULL,
+  `Product_Status` varchar(15) NOT NULL,
+  PRIMARY KEY (`Product_No`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `producttbl`
+--
+
+LOCK TABLES `producttbl` WRITE;
+/*!40000 ALTER TABLE `producttbl` DISABLE KEYS */;
+INSERT INTO `producttbl` VALUES (1,'Mask','Available'),(2,'Toner','Available'),(3,'Cream','Available'),(4,'Gel','Available'),(5,'Serum','Available'),(6,'Lotion','Available');
+/*!40000 ALTER TABLE `producttbl` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Temporary view structure for view `pulloutprodreport`
+--
+
+DROP TABLE IF EXISTS `pulloutprodreport`;
+/*!50001 DROP VIEW IF EXISTS `pulloutprodreport`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `pulloutprodreport` AS SELECT 
+ 1 AS `inventory_subtract_no`,
+ 1 AS `Date_Deducted`,
+ 1 AS `Product_Type`,
+ 1 AS `Product_Name`,
+ 1 AS `Previous_Quantity`,
+ 1 AS `Quantity_Deducted`,
+ 1 AS `Reason_Usage`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `receipttbl`
+--
+
+DROP TABLE IF EXISTS `receipttbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `receipttbl` (
+  `Receipt_No` int(11) NOT NULL,
+  `Billing_No` int(11) NOT NULL,
+  `Receipt_Code` varchar(15) DEFAULT NULL,
+  PRIMARY KEY (`Receipt_No`),
+  KEY `index1` (`Billing_No`),
+  CONSTRAINT `billing_receipt_fk` FOREIGN KEY (`Billing_No`) REFERENCES `billingtbl` (`Billing_No`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `receipttbl`
+--
+
+
+--
+-- Temporary view structure for view `restockreport`
+--
+
+DROP TABLE IF EXISTS `restockreport`;
+/*!50001 DROP VIEW IF EXISTS `restockreport`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `restockreport` AS SELECT 
+ 1 AS `Inventory_Added_No`,
+ 1 AS `Product_Type`,
+ 1 AS `Product_Name`,
+ 1 AS `Quantity_Added`,
+ 1 AS `Inadequate_Qty`,
+ 1 AS `Date_Added`,
+ 1 AS `Previous_Quantity`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `service_producttbl`
+--
+
+DROP TABLE IF EXISTS `service_producttbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `service_producttbl` (
+  `Service_ProductNo` int(11) NOT NULL,
+  `Service_No` int(11) NOT NULL,
+  `Product_ProdType_No` int(11) NOT NULL,
+  PRIMARY KEY (`Service_ProductNo`),
+  KEY `prod_service_fk` (`Service_No`),
+  KEY `prod_product_fk` (`Product_ProdType_No`),
+  CONSTRAINT `prod_service_fk` FOREIGN KEY (`Service_No`) REFERENCES `servicetbl` (`Service_No`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `service_product_fk` FOREIGN KEY (`Product_ProdType_No`) REFERENCES `product_prodtypetbl` (`Product_ProdType_No`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `service_producttbl`
+--
+
+LOCK TABLES `service_producttbl` WRITE;
+/*!40000 ALTER TABLE `service_producttbl` DISABLE KEYS */;
+INSERT INTO `service_producttbl` VALUES (6,5,16),(7,5,11),(8,6,21),(9,6,20),(10,7,17);
+/*!40000 ALTER TABLE `service_producttbl` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `service_promotbl`
+--
+
+DROP TABLE IF EXISTS `service_promotbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `service_promotbl` (
+  `Promo_No` int(11) NOT NULL,
+  `Promo_Description` varchar(200) NOT NULL,
+  `Promo_Start` date NOT NULL,
+  `Promo_End` date NOT NULL,
+  `Promo_Status` varchar(15) NOT NULL,
+  PRIMARY KEY (`Promo_No`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `service_promotbl`
+--
+
+LOCK TABLES `service_promotbl` WRITE;
+/*!40000 ALTER TABLE `service_promotbl` DISABLE KEYS */;
+INSERT INTO `service_promotbl` VALUES (1,'50 % off on facial services','2017-10-19','2017-10-31','Pending');
+/*!40000 ALTER TABLE `service_promotbl` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `servicetbl`
+--
+
+DROP TABLE IF EXISTS `servicetbl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `servicetbl` (
+  `Service_No` int(11) NOT NULL,
+  `Service_Name` varchar(100) NOT NULL,
+  `Service_Fee` decimal(11,2) NOT NULL,
+  `No_Of_Visit` int(11) NOT NULL,
+  `Hour_Consumed` int(11) NOT NULL,
+  `Minute_Consumed` int(11) NOT NULL,
+  `Service_Status` varchar(10) NOT NULL,
+  PRIMARY KEY (`Service_No`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `servicetbl`
+--
+
+LOCK TABLES `servicetbl` WRITE;
+/*!40000 ALTER TABLE `servicetbl` DISABLE KEYS */;
+INSERT INTO `servicetbl` VALUES (1,'Oil control',3000.00,3,1,60,'Active'),(2,'Whitening Facial',2500.00,4,1,60,'Active'),(3,'aa',3000.00,1,1,60,'Deleted'),(4,'Caviar Masque',5000.00,4,1,60,'Active'),(5,'Ultrasonic Treatment',5000.00,2,1,60,'Active'),(6,'Botox',6500.00,5,1,60,'Active'),(7,'Keloid Treatment',8500.00,2,1,60,'Active');
+/*!40000 ALTER TABLE `servicetbl` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Temporary view structure for view `todaysalesreportperproduct`
+--
+
+DROP TABLE IF EXISTS `todaysalesreportperproduct`;
+/*!50001 DROP VIEW IF EXISTS `todaysalesreportperproduct`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `todaysalesreportperproduct` AS SELECT 
+ 1 AS `Billing_No`,
+ 1 AS `Product_Type`,
+ 1 AS `Product_Name`,
+ 1 AS `Quantity`,
+ 1 AS `Product_Fee`,
+ 1 AS `SubTotal`,
+ 1 AS `Date`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `todaysalesreportperservice`
+--
+
+DROP TABLE IF EXISTS `todaysalesreportperservice`;
+/*!50001 DROP VIEW IF EXISTS `todaysalesreportperservice`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `todaysalesreportperservice` AS SELECT 
+ 1 AS `Billing_No`,
+ 1 AS `Patient`,
+ 1 AS `Service_Name`,
+ 1 AS `Service_Fee`,
+ 1 AS `Amount_Paid`,
+ 1 AS `Date`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `weeklysalesreportperproduct`
+--
+
+DROP TABLE IF EXISTS `weeklysalesreportperproduct`;
+/*!50001 DROP VIEW IF EXISTS `weeklysalesreportperproduct`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `weeklysalesreportperproduct` AS SELECT 
+ 1 AS `Billing_No`,
+ 1 AS `Billing_Date`,
+ 1 AS `ModeOfPayment`,
+ 1 AS `SubTotal`,
+ 1 AS `Total_Bill`,
+ 1 AS `Amount_Paid`,
+ 1 AS `Week`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `weeklysalesreportperservice`
+--
+
+DROP TABLE IF EXISTS `weeklysalesreportperservice`;
+/*!50001 DROP VIEW IF EXISTS `weeklysalesreportperservice`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `weeklysalesreportperservice` AS SELECT 
+ 1 AS `Billing_No`,
+ 1 AS `Billing_Date`,
+ 1 AS `Patient`,
+ 1 AS `Service_Name`,
+ 1 AS `ModeOfPayment`,
+ 1 AS `SubTotal`,
+ 1 AS `Total_Bill`,
+ 1 AS `Amount_Paid`,
+ 1 AS `Week`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `weeklyservicereport`
+--
+
+DROP TABLE IF EXISTS `weeklyservicereport`;
+/*!50001 DROP VIEW IF EXISTS `weeklyservicereport`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `weeklyservicereport` AS SELECT 
+ 1 AS `Appointment_No`,
+ 1 AS `Appointment_Date`,
+ 1 AS `Service_Name`,
+ 1 AS `Employee`,
+ 1 AS `Patient`,
+ 1 AS `Week`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Final view structure for view `annualpulloutprodreport`
+--
+
+/*!50001 DROP VIEW IF EXISTS `annualpulloutprodreport`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `annualpulloutprodreport` AS select `ins`.`Inventory_Subtract_No` AS `inventory_subtract_no`,date_format(`ins`.`Date_Deducted`,'%m-%d-%Y') AS `Date_Deducted`,`pt`.`Product_Type` AS `Product_Type`,`p`.`Product_Name` AS `Product_Name`,`ins`.`Previous_Quantity` AS `Previous_Quantity`,`ins`.`Quantity_Deducted` AS `Quantity_Deducted`,`ins`.`Reason_Usage` AS `Reason_Usage`,year(`ins`.`Date_Deducted`) AS `YEAR(Date_Deducted)`,monthname(`ins`.`Date_Deducted`) AS `Month` from ((((`inventory_subtracttbl` `ins` join `product_inventorytbl` `pi`) join `product_prodtypetbl` `ppt`) join `product_typetbl` `pt`) join `producttbl` `p`) where ((`ins`.`Inventory_No` = `pi`.`Inventory_No`) and (`pi`.`Product_ProdType_No` = `ppt`.`Product_ProdType_No`) and (`ppt`.`Product_Type_No` = `pt`.`Product_Type_No`) and (`ppt`.`Product_No` = `p`.`Product_No`)) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `annualrestockreport`
+--
+
+/*!50001 DROP VIEW IF EXISTS `annualrestockreport`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `annualrestockreport` AS select `ia`.`Inventory_Added_No` AS `Inventory_Added_No`,`pt`.`Product_Type` AS `Product_Type`,`p`.`Product_Name` AS `Product_Name`,`ia`.`Quantity_Added` AS `Quantity_Added`,`ia`.`Inadequate_Qty` AS `Inadequate_Qty`,date_format(`ia`.`Date_Added`,'%m-%d-%Y') AS `Date_Added`,`ia`.`Previous_Quantity` AS `Previous_Quantity`,monthname(`ia`.`Date_Added`) AS `Month` from ((((`inventory_addedtbl` `ia` join `product_inventorytbl` `pi`) join `product_prodtypetbl` `ppt`) join `product_typetbl` `pt`) join `producttbl` `p`) where ((`ia`.`Inventory_No` = `pi`.`Inventory_No`) and (`pi`.`Product_ProdType_No` = `ppt`.`Product_ProdType_No`) and (`ppt`.`Product_Type_No` = `pt`.`Product_Type_No`) and (`ppt`.`Product_No` = `p`.`Product_No`)) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `annualsalesreportperproduct`
+--
+
+/*!50001 DROP VIEW IF EXISTS `annualsalesreportperproduct`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `annualsalesreportperproduct` AS select `b`.`Billing_No` AS `Billing_No`,`b`.`Billing_Date` AS `Billing_Date`,`b`.`ModeOfPayment` AS `ModeOfPayment`,sum((`bi`.`Quantity` * `ppt`.`Product_Fee`)) AS `SubTotal`,`b`.`Total_Bill` AS `Total_Bill`,`py`.`Amount_Paid` AS `Amount_Paid`,year(`b`.`Billing_Date`) AS `Year`,monthname(`b`.`Billing_Date`) AS `Month` from (((((`billingtbl` `b` join `paymenttbl` `py`) join `billing_itemstbl` `bi`) join `product_prodtypetbl` `ppt`) join `product_typetbl` `pt`) join `producttbl` `p`) where (isnull(`bi`.`Service_No`) and (`bi`.`Billing_No` = `b`.`Billing_No`) and (`b`.`Billing_No` = `py`.`Billing_No`) and (`bi`.`Product_ProdType_No` = `ppt`.`Product_ProdType_No`) and (`ppt`.`Product_No` = `p`.`Product_No`) and (`ppt`.`Product_Type_No` = `pt`.`Product_Type_No`)) group by `b`.`Billing_No`,year(`b`.`Billing_Date`) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `annualsalesreportperservice`
+--
+
+/*!50001 DROP VIEW IF EXISTS `annualsalesreportperservice`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `annualsalesreportperservice` AS select `b`.`Billing_No` AS `Billing_No`,`b`.`Billing_Date` AS `Billing_Date`,concat(`pa`.`Patient_LName`,', ',`pa`.`Patient_FName`,' ',`pa`.`Patient_MidInit`) AS `Patient`,`b`.`ModeOfPayment` AS `ModeOfPayment`,sum(`s`.`Service_Fee`) AS `SubTotal`,`b`.`Total_Bill` AS `Total_Bill`,`py`.`Amount_Paid` AS `Amount_Paid`,year(`b`.`Billing_Date`) AS `YEAR(Billing_Date)`,monthname(`b`.`Billing_Date`) AS `Month`,`s`.`Service_Name` AS `Service_Name` from ((((`billingtbl` `b` join `paymenttbl` `py`) join `billing_itemstbl` `bi`) join `servicetbl` `s`) join `patienttbl` `pa`) where ((`bi`.`Service_No` is not null) and (`bi`.`Billing_No` = `b`.`Billing_No`) and (`b`.`Billing_No` = `py`.`Billing_No`) and (`bi`.`Service_No` = `s`.`Service_No`) and (`b`.`Patient_No` = `pa`.`Patient_No`)) group by `b`.`Billing_No`,year(`b`.`Billing_Date`) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `annualservicereport`
+--
+
+/*!50001 DROP VIEW IF EXISTS `annualservicereport`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `annualservicereport` AS select `a`.`Appointment_No` AS `Appointment_No`,`a`.`Appointment_Date` AS `Appointment_Date`,`s`.`Service_Name` AS `Service_Name`,concat(`e`.`Employee_LName`,', ',`e`.`Employee_FName`,' ',`e`.`Employee_MidInit`) AS `Employee`,concat(`p`.`Patient_LName`,', ',`p`.`Patient_FName`,' ',`p`.`Patient_MidInit`) AS `Patient`,year(`a`.`Appointment_Date`) AS `year(Appointment_Date)`,monthname(`a`.`Appointment_Date`) AS `Month` from (((((`appointmenttbl` `a` join `servicetbl` `s`) join `employee_appointmenttbl` `ea`) join `employee_patienttbl` `ep`) join `employeetbl` `e`) join `patienttbl` `p`) where ((`a`.`Appointment_Status` = 'Done') and (`a`.`Service_No` = `s`.`Service_No`) and (`a`.`Appointment_No` = `ea`.`Appointment_No`) and (`ea`.`Employee_Patient_No` = `ep`.`Employee_Patient_No`) and (`ep`.`Employee_No` = `e`.`Employee_No`) and (`ep`.`Patient_No` = `p`.`Patient_No`)) group by year(`a`.`Appointment_Date`),`a`.`Appointment_No` order by `a`.`Appointment_Date` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `dailysalesreportperproduct`
+--
+
+/*!50001 DROP VIEW IF EXISTS `dailysalesreportperproduct`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `dailysalesreportperproduct` AS select `b`.`Billing_No` AS `Billing_No`,`b`.`Billing_Date` AS `Billing_Date`,`b`.`ModeOfPayment` AS `ModeOfPayment`,sum((`bi`.`Quantity` * `ppt`.`Product_Fee`)) AS `SubTotal`,`b`.`Total_Bill` AS `Total_Bill`,`py`.`Amount_Paid` AS `Amount_Paid`,year(`b`.`Billing_Date`) AS `YEAR(Billing_Date)` from (((((`billingtbl` `b` join `paymenttbl` `py`) join `billing_itemstbl` `bi`) join `product_prodtypetbl` `ppt`) join `product_typetbl` `pt`) join `producttbl` `p`) where (isnull(`bi`.`Service_No`) and (`bi`.`Billing_No` = `b`.`Billing_No`) and (`b`.`Billing_No` = `py`.`Billing_No`) and (`bi`.`Product_ProdType_No` = `ppt`.`Product_ProdType_No`) and (`ppt`.`Product_No` = `p`.`Product_No`) and (`ppt`.`Product_Type_No` = `pt`.`Product_Type_No`)) group by `b`.`Billing_No`,`b`.`Billing_Date` order by `b`.`Billing_Date` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `dailysalesreportperservice`
+--
+
+/*!50001 DROP VIEW IF EXISTS `dailysalesreportperservice`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `dailysalesreportperservice` AS select `b`.`Billing_No` AS `Billing_No`,date_format(`b`.`Billing_Date`,'%m-%d-%Y') AS `Billing_Date`,concat(`pa`.`Patient_LName`,', ',`pa`.`Patient_FName`,' ',`pa`.`Patient_MidInit`) AS `Patient`,`b`.`ModeOfPayment` AS `ModeOfPayment`,`s`.`Service_Name` AS `Service_Name`,sum(`s`.`Service_Fee`) AS `SubTotal`,`b`.`Total_Bill` AS `Total_Bill`,`py`.`Amount_Paid` AS `Amount_Paid`,year(`b`.`Billing_Date`) AS `YEAR(Billing_Date)` from ((((`billingtbl` `b` join `paymenttbl` `py`) join `billing_itemstbl` `bi`) join `servicetbl` `s`) join `patienttbl` `pa`) where ((`bi`.`Service_No` is not null) and (`bi`.`Billing_No` = `b`.`Billing_No`) and (`b`.`Billing_No` = `py`.`Billing_No`) and (`bi`.`Service_No` = `s`.`Service_No`) and (`b`.`Patient_No` = `pa`.`Patient_No`)) group by `b`.`Billing_No`,`b`.`Billing_Date` order by `b`.`Billing_Date` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `dailyservicereport`
+--
+
+/*!50001 DROP VIEW IF EXISTS `dailyservicereport`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `dailyservicereport` AS select `a`.`Appointment_No` AS `Appointment_No`,count(0) AS `TOTALRECORD`,date_format(`a`.`Appointment_Date`,'%m-%d-%Y') AS `Appointment_Date`,`s`.`Service_Name` AS `Service_Name`,concat(`e`.`Employee_LName`,', ',`e`.`Employee_FName`,' ',`e`.`Employee_MidInit`) AS `Employee`,concat(`p`.`Patient_LName`,', ',`p`.`Patient_FName`,' ',`p`.`Patient_MidInit`) AS `Patient` from (((((`appointmenttbl` `a` join `servicetbl` `s`) join `employee_appointmenttbl` `ea`) join `employee_patienttbl` `ep`) join `employeetbl` `e`) join `patienttbl` `p`) where ((`a`.`Appointment_Status` = 'Done') and (`a`.`Service_No` = `s`.`Service_No`) and (`a`.`Appointment_No` = `ea`.`Appointment_No`) and (`ea`.`Employee_Patient_No` = `ep`.`Employee_Patient_No`) and (`ep`.`Employee_No` = `e`.`Employee_No`) and (`ep`.`Patient_No` = `p`.`Patient_No`)) group by `a`.`Appointment_No` order by `a`.`Appointment_Date` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `inventorylistperproduct`
+--
+
+/*!50001 DROP VIEW IF EXISTS `inventorylistperproduct`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `inventorylistperproduct` AS select `pi`.`Inventory_No` AS `Inventory_No`,`pt`.`Product_Type` AS `Product_Type`,`p`.`Product_Name` AS `Product_Name`,`pi`.`Total_Quantity` AS `Total_Quantity` from (((`product_inventorytbl` `pi` join `product_prodtypetbl` `ppt`) join `product_typetbl` `pt`) join `producttbl` `p`) where ((`pi`.`Product_ProdType_No` = `ppt`.`Product_ProdType_No`) and (`ppt`.`Product_Type_No` = `pt`.`Product_Type_No`) and (`ppt`.`Product_No` = `p`.`Product_No`)) group by `pi`.`Inventory_No` order by `pi`.`Inventory_No` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `inventorylistpertype`
+--
+
+/*!50001 DROP VIEW IF EXISTS `inventorylistpertype`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `inventorylistpertype` AS select `pi`.`Inventory_No` AS `Inventory_No`,`pt`.`Product_Type` AS `Product_Type`,`p`.`Product_Name` AS `Product_Name`,`pi`.`Total_Quantity` AS `Total_Quantity` from (((`product_inventorytbl` `pi` join `product_prodtypetbl` `ppt`) join `product_typetbl` `pt`) join `producttbl` `p`) where ((`pi`.`Product_ProdType_No` = `ppt`.`Product_ProdType_No`) and (`ppt`.`Product_Type_No` = `pt`.`Product_Type_No`) and (`ppt`.`Product_No` = `p`.`Product_No`)) group by `pt`.`Product_Type_No`,`pi`.`Inventory_No` order by `pi`.`Inventory_No` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `monthlypulloutprodreport`
+--
+
+/*!50001 DROP VIEW IF EXISTS `monthlypulloutprodreport`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `monthlypulloutprodreport` AS select `ins`.`Inventory_Subtract_No` AS `inventory_subtract_no`,date_format(`ins`.`Date_Deducted`,'%m-%d-%Y') AS `Date_Deducted`,`pt`.`Product_Type` AS `Product_Type`,`p`.`Product_Name` AS `Product_Name`,`ins`.`Previous_Quantity` AS `Previous_Quantity`,`ins`.`Quantity_Deducted` AS `Quantity_Deducted`,`ins`.`Reason_Usage` AS `Reason_Usage`,year(`ins`.`Date_Deducted`) AS `YEAR(Date_Deducted)`,dayofmonth(`ins`.`Date_Deducted`) AS `Day` from ((((`inventory_subtracttbl` `ins` join `product_inventorytbl` `pi`) join `product_prodtypetbl` `ppt`) join `product_typetbl` `pt`) join `producttbl` `p`) where ((`ins`.`Inventory_No` = `pi`.`Inventory_No`) and (`pi`.`Product_ProdType_No` = `ppt`.`Product_ProdType_No`) and (`ppt`.`Product_Type_No` = `pt`.`Product_Type_No`) and (`ppt`.`Product_No` = `p`.`Product_No`)) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `monthlyrestockreport`
+--
+
+/*!50001 DROP VIEW IF EXISTS `monthlyrestockreport`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `monthlyrestockreport` AS select `ia`.`Inventory_Added_No` AS `Inventory_Added_No`,`pt`.`Product_Type` AS `Product_Type`,`p`.`Product_Name` AS `Product_Name`,`ia`.`Quantity_Added` AS `Quantity_Added`,`ia`.`Inadequate_Qty` AS `Inadequate_Qty`,date_format(`ia`.`Date_Added`,'%m-%d-%Y') AS `Date_Added`,`ia`.`Previous_Quantity` AS `Previous_Quantity`,dayofmonth(`ia`.`Date_Added`) AS `Day` from ((((`inventory_addedtbl` `ia` join `product_inventorytbl` `pi`) join `product_prodtypetbl` `ppt`) join `product_typetbl` `pt`) join `producttbl` `p`) where ((`ia`.`Inventory_No` = `pi`.`Inventory_No`) and (`pi`.`Product_ProdType_No` = `ppt`.`Product_ProdType_No`) and (`ppt`.`Product_Type_No` = `pt`.`Product_Type_No`) and (`ppt`.`Product_No` = `p`.`Product_No`)) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `monthlysalesreportperproduct`
+--
+
+/*!50001 DROP VIEW IF EXISTS `monthlysalesreportperproduct`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `monthlysalesreportperproduct` AS select `b`.`Billing_No` AS `Billing_No`,`b`.`Billing_Date` AS `Billing_Date`,`b`.`ModeOfPayment` AS `ModeOfPayment`,sum((`bi`.`Quantity` * `ppt`.`Product_Fee`)) AS `SubTotal`,`b`.`Total_Bill` AS `Total_Bill`,`py`.`Amount_Paid` AS `Amount_Paid`,date_format(`b`.`Billing_Date`,'%M') AS `Month`,dayofmonth(`b`.`Billing_Date`) AS `Day` from (((((`billingtbl` `b` join `paymenttbl` `py`) join `billing_itemstbl` `bi`) join `product_prodtypetbl` `ppt`) join `product_typetbl` `pt`) join `producttbl` `p`) where (isnull(`bi`.`Service_No`) and (`bi`.`Billing_No` = `b`.`Billing_No`) and (`b`.`Billing_No` = `py`.`Billing_No`) and (`bi`.`Product_ProdType_No` = `ppt`.`Product_ProdType_No`) and (`ppt`.`Product_No` = `p`.`Product_No`) and (`ppt`.`Product_Type_No` = `pt`.`Product_Type_No`)) group by `b`.`Billing_No`,month(`b`.`Billing_Date`) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `monthlysalesreportperservice`
+--
+
+/*!50001 DROP VIEW IF EXISTS `monthlysalesreportperservice`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `monthlysalesreportperservice` AS select `b`.`Billing_No` AS `Billing_No`,`b`.`Billing_Date` AS `Billing_Date`,concat(`pa`.`Patient_LName`,', ',`pa`.`Patient_FName`,' ',`pa`.`Patient_MidInit`) AS `Patient`,`b`.`ModeOfPayment` AS `ModeOfPayment`,sum(`s`.`Service_Fee`) AS `SubTotal`,`b`.`Total_Bill` AS `Total_Bill`,`py`.`Amount_Paid` AS `Amount_Paid`,date_format(`b`.`Billing_Date`,'%M') AS `Month`,dayofmonth(`b`.`Billing_Date`) AS `Day`,`s`.`Service_Name` AS `Service_Name` from ((((`billingtbl` `b` join `paymenttbl` `py`) join `billing_itemstbl` `bi`) join `servicetbl` `s`) join `patienttbl` `pa`) where ((`bi`.`Service_No` is not null) and (`bi`.`Billing_No` = `b`.`Billing_No`) and (`b`.`Billing_No` = `py`.`Billing_No`) and (`bi`.`Service_No` = `s`.`Service_No`) and (`b`.`Patient_No` = `pa`.`Patient_No`)) group by `b`.`Billing_No`,month(`b`.`Billing_Date`) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `monthlyservicereport`
+--
+
+/*!50001 DROP VIEW IF EXISTS `monthlyservicereport`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `monthlyservicereport` AS select `a`.`Appointment_No` AS `Appointment_No`,`a`.`Appointment_Date` AS `Appointment_Date`,`s`.`Service_Name` AS `Service_Name`,concat(`e`.`Employee_LName`,', ',`e`.`Employee_FName`,' ',`e`.`Employee_MidInit`) AS `Employee`,concat(`p`.`Patient_LName`,', ',`p`.`Patient_FName`,' ',`p`.`Patient_MidInit`) AS `Patient`,date_format(`a`.`Appointment_Date`,'%M') AS `Month`,dayofmonth(`a`.`Appointment_Date`) AS `Day` from (((((`appointmenttbl` `a` join `servicetbl` `s`) join `employee_appointmenttbl` `ea`) join `employee_patienttbl` `ep`) join `employeetbl` `e`) join `patienttbl` `p`) where ((`a`.`Appointment_Status` = 'Done') and (`a`.`Service_No` = `s`.`Service_No`) and (`a`.`Appointment_No` = `ea`.`Appointment_No`) and (`ea`.`Employee_Patient_No` = `ep`.`Employee_Patient_No`) and (`ep`.`Employee_No` = `e`.`Employee_No`) and (`ep`.`Patient_No` = `p`.`Patient_No`)) group by month(`a`.`Appointment_Date`),`a`.`Appointment_No` order by `a`.`Appointment_Date` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `patientlist`
+--
+
+/*!50001 DROP VIEW IF EXISTS `patientlist`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `patientlist` AS select `patienttbl`.`Patient_No` AS `Patient_No`,`patienttbl`.`Date_Registered` AS `Date_Registered`,concat(`patienttbl`.`Patient_LName`,', ',`patienttbl`.`Patient_FName`,' ',`patienttbl`.`Patient_MidInit`) AS `Patient`,`patienttbl`.`Patient_Gender` AS `Patient_Gender`,`patienttbl`.`Patient_Age` AS `Patient_Age` from `patienttbl` order by `patienttbl`.`Patient_No` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `pulloutprodreport`
+--
+
+/*!50001 DROP VIEW IF EXISTS `pulloutprodreport`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `pulloutprodreport` AS select `ins`.`Inventory_Subtract_No` AS `inventory_subtract_no`,date_format(`ins`.`Date_Deducted`,'%m-%d-%Y') AS `Date_Deducted`,`pt`.`Product_Type` AS `Product_Type`,`p`.`Product_Name` AS `Product_Name`,`ins`.`Previous_Quantity` AS `Previous_Quantity`,`ins`.`Quantity_Deducted` AS `Quantity_Deducted`,`ins`.`Reason_Usage` AS `Reason_Usage` from ((((`inventory_subtracttbl` `ins` join `product_inventorytbl` `pi`) join `product_prodtypetbl` `ppt`) join `product_typetbl` `pt`) join `producttbl` `p`) where ((`ins`.`Inventory_No` = `pi`.`Inventory_No`) and (`pi`.`Product_ProdType_No` = `ppt`.`Product_ProdType_No`) and (`ppt`.`Product_Type_No` = `pt`.`Product_Type_No`) and (`ppt`.`Product_No` = `p`.`Product_No`)) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `restockreport`
+--
+
+/*!50001 DROP VIEW IF EXISTS `restockreport`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `restockreport` AS select `ia`.`Inventory_Added_No` AS `Inventory_Added_No`,`pt`.`Product_Type` AS `Product_Type`,`p`.`Product_Name` AS `Product_Name`,`ia`.`Quantity_Added` AS `Quantity_Added`,`ia`.`Inadequate_Qty` AS `Inadequate_Qty`,date_format(`ia`.`Date_Added`,'%m-%d-%Y') AS `Date_Added`,`ia`.`Previous_Quantity` AS `Previous_Quantity` from ((((`inventory_addedtbl` `ia` join `product_inventorytbl` `pi`) join `product_prodtypetbl` `ppt`) join `product_typetbl` `pt`) join `producttbl` `p`) where ((`ia`.`Inventory_No` = `pi`.`Inventory_No`) and (`pi`.`Product_ProdType_No` = `ppt`.`Product_ProdType_No`) and (`ppt`.`Product_Type_No` = `pt`.`Product_Type_No`) and (`ppt`.`Product_No` = `p`.`Product_No`)) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `todaysalesreportperproduct`
+--
+
+/*!50001 DROP VIEW IF EXISTS `todaysalesreportperproduct`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `todaysalesreportperproduct` AS select `b`.`Billing_No` AS `Billing_No`,`pt`.`Product_Type` AS `Product_Type`,`p`.`Product_Name` AS `Product_Name`,`bi`.`Quantity` AS `Quantity`,`ppt`.`Product_Fee` AS `Product_Fee`,sum((`bi`.`Quantity` * `ppt`.`Product_Fee`)) AS `SubTotal`,date_format(`b`.`Billing_Date`,'%m-%d-%Y') AS `Date` from ((((`billingtbl` `b` join `billing_itemstbl` `bi`) join `product_prodtypetbl` `ppt`) join `product_typetbl` `pt`) join `producttbl` `p`) where (isnull(`bi`.`Service_No`) and (`b`.`Billing_No` = `bi`.`Billing_No`) and (`bi`.`Product_ProdType_No` = `ppt`.`Product_ProdType_No`) and (`ppt`.`Product_Type_No` = `pt`.`Product_Type_No`) and (`ppt`.`Product_No` = `p`.`Product_No`)) group by `b`.`Billing_No` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `todaysalesreportperservice`
+--
+
+/*!50001 DROP VIEW IF EXISTS `todaysalesreportperservice`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `todaysalesreportperservice` AS select `b`.`Billing_No` AS `Billing_No`,concat(`pa`.`Patient_LName`,', ',`pa`.`Patient_FName`,' ',`pa`.`Patient_MidInit`) AS `Patient`,`s`.`Service_Name` AS `Service_Name`,`s`.`Service_Fee` AS `Service_Fee`,`py`.`Amount_Paid` AS `Amount_Paid`,date_format(`b`.`Billing_Date`,'%m-%d-%Y') AS `Date` from ((((`paymenttbl` `py` join `billing_itemstbl` `bi`) join `billingtbl` `b`) join `servicetbl` `s`) join `patienttbl` `pa`) where ((`bi`.`Service_No` is not null) and (`b`.`Billing_No` = `bi`.`Billing_No`) and (`bi`.`Billing_No` = `py`.`Billing_No`) and (`bi`.`Service_No` = `s`.`Service_No`) and (`b`.`Patient_No` = `pa`.`Patient_No`)) group by `b`.`Billing_No` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `weeklysalesreportperproduct`
+--
+
+/*!50001 DROP VIEW IF EXISTS `weeklysalesreportperproduct`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `weeklysalesreportperproduct` AS select `b`.`Billing_No` AS `Billing_No`,`b`.`Billing_Date` AS `Billing_Date`,`b`.`ModeOfPayment` AS `ModeOfPayment`,sum((`bi`.`Quantity` * `ppt`.`Product_Fee`)) AS `SubTotal`,`b`.`Total_Bill` AS `Total_Bill`,`py`.`Amount_Paid` AS `Amount_Paid`,(floor(((dayofmonth(`b`.`Billing_Date`) - 1) / 7)) + 1) AS `Week` from (((((`billingtbl` `b` join `paymenttbl` `py`) join `billing_itemstbl` `bi`) join `product_prodtypetbl` `ppt`) join `product_typetbl` `pt`) join `producttbl` `p`) where (isnull(`bi`.`Service_No`) and (`bi`.`Billing_No` = `b`.`Billing_No`) and (`b`.`Billing_No` = `py`.`Billing_No`) and (`bi`.`Product_ProdType_No` = `ppt`.`Product_ProdType_No`) and (`ppt`.`Product_No` = `p`.`Product_No`) and (`ppt`.`Product_Type_No` = `pt`.`Product_Type_No`)) group by `b`.`Billing_No`,week(`b`.`Billing_Date`,0) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `weeklysalesreportperservice`
+--
+
+/*!50001 DROP VIEW IF EXISTS `weeklysalesreportperservice`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `weeklysalesreportperservice` AS select `b`.`Billing_No` AS `Billing_No`,`b`.`Billing_Date` AS `Billing_Date`,concat(`pa`.`Patient_LName`,', ',`pa`.`Patient_FName`,' ',`pa`.`Patient_MidInit`) AS `Patient`,`s`.`Service_Name` AS `Service_Name`,`b`.`ModeOfPayment` AS `ModeOfPayment`,sum(`s`.`Service_Fee`) AS `SubTotal`,`b`.`Total_Bill` AS `Total_Bill`,`py`.`Amount_Paid` AS `Amount_Paid`,(floor(((dayofmonth(`b`.`Billing_Date`) - 1) / 7)) + 1) AS `Week` from ((((`billingtbl` `b` join `paymenttbl` `py`) join `billing_itemstbl` `bi`) join `servicetbl` `s`) join `patienttbl` `pa`) where ((`bi`.`Service_No` is not null) and (`bi`.`Billing_No` = `b`.`Billing_No`) and (`b`.`Billing_No` = `py`.`Billing_No`) and (`bi`.`Service_No` = `s`.`Service_No`) and (`b`.`Patient_No` = `pa`.`Patient_No`)) group by `b`.`Billing_No`,week(`b`.`Billing_Date`,0) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `weeklyservicereport`
+--
+
+/*!50001 DROP VIEW IF EXISTS `weeklyservicereport`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `weeklyservicereport` AS select `a`.`Appointment_No` AS `Appointment_No`,`a`.`Appointment_Date` AS `Appointment_Date`,`s`.`Service_Name` AS `Service_Name`,concat(`e`.`Employee_LName`,', ',`e`.`Employee_FName`,' ',`e`.`Employee_MidInit`) AS `Employee`,concat(`p`.`Patient_LName`,', ',`p`.`Patient_FName`,' ',`p`.`Patient_MidInit`) AS `Patient`,(floor(((dayofmonth(`a`.`Appointment_Date`) - 1) / 7)) + 1) AS `Week` from (((((`appointmenttbl` `a` join `servicetbl` `s`) join `employee_appointmenttbl` `ea`) join `employee_patienttbl` `ep`) join `employeetbl` `e`) join `patienttbl` `p`) where ((`a`.`Appointment_Status` = 'Done') and (`a`.`Service_No` = `s`.`Service_No`) and (`a`.`Appointment_No` = `ea`.`Appointment_No`) and (`ea`.`Employee_Patient_No` = `ep`.`Employee_Patient_No`) and (`ep`.`Employee_No` = `e`.`Employee_No`) and (`ep`.`Patient_No` = `p`.`Patient_No`)) group by week(`a`.`Appointment_Date`,0),`a`.`Appointment_No` order by `a`.`Appointment_Date` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2017-10-18  1:07:45
